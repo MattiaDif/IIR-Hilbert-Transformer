@@ -10,6 +10,8 @@ Hilbert transformers play a pivotal role in various signal processing applicatio
 
 This repo is exclusively based on the work of Harris and colleagues: ([paper](http://www.aes.org/e-lib/browse.cfm?elib=15680)).
 
+The class generated coefficients with or without frequency warping (sometimes required to improve filter behavior near DC).
+
 
 ## Required Software
 
