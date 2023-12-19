@@ -2,7 +2,7 @@
 
 <p align="center">
 
-<img src="https://github.com/MattiaDif/IIR-Hilbert-Transformer/blob/dev/img/phase_diff.png" width="500">
+<img src="https://github.com/MattiaDif/IIR-Hilbert-Transformer/blob/main/img/phase_diff.png" width="500">
 
 </p>
 
