@@ -1,5 +1,10 @@
 # Python implementation of An Infinite Impulse Response (IIR) Hilbert Transformer
 
+<p align="center">
+
+<img src="https://github.com/MattiaDif/IIR-Hilbert-Transformer/blob/dev/img/phase_diff.png" width="500">
+
+</p>
 
 Hilbert transformers play a pivotal role in various signal processing applications, ranging from single-sideband communication systems to audio effects. The utilization of Infinite Impulse Response (IIR) implementations is particularly appealing due to their computational efficiency. This approach begins with the design of a half-band filter, illustrating how the pole locations evolve during the transformation process from a half-band filter to summed all-pass filters and ultimately to a Hilbert transformer filter. 
 
@@ -32,4 +37,4 @@ Inside IIR-HIlbert-Transformer
 ## REFERENCE
 If you use this repo, please cite:
 
-"Di Florio, M., Iyer, V., Rajhans, A., Buccelli, S., & Chiappalone, M. (2022, July). Model-based online implementation of spike detection algorithms for neuroengineering applications. In 2022 44th Annual International Conference of the IEEE Engineering in Medicine & Biology Society (EMBC) (pp. 736-739). IEEE."
+"Di Florio, M. (2023). IIR-Hilbert-Transformer (Version 0.1) [Computer software]. https://github.com/MattiaDif/IIR-Hilbert-Transformer.git"
