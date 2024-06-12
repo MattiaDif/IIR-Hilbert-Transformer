@@ -8,9 +8,11 @@
 #
 # @brief
 # IIR Hilbert filter implementation as a cascade of 1st order sections
+#
 # For more info, refer to:
-# Harris et al., "An Infinite Impulse Response (IIR) Hilbert Transformer Design Technique for Audio." 
-# Audio Engineering Society Convention 129. Audio Engineering Society, 2010.
+# [1] Harris et al., "An Infinite Impulse Response (IIR) Hilbert Transformer Design Technique for Audio." 
+#     Audio Engineering Society Convention 129. Audio Engineering Society, 2010.
+# [2] Sanjit Mitra, Digital Signal Processing, McGraw￾Hill, 3rd edition, New York, NY, 2005. 
 # 
 # @changelog
 # > 
@@ -44,7 +46,7 @@ class AllPass:
         IN THE ORDER N IS NOT SPECIFIED, IT WILL BE AUTOMATICALLY COMPUTED 
         """
 
-        self._fs      = fs
+        self._fs      = fs 
         self._As      = As
         self._N       = N
 
@@ -104,19 +106,19 @@ class AllPass:
 
     def _coeff_generation(self):
         """
-        IIR HIlber filter coefficients generation
+        IIR Hilbert filter coefficients generation with no warping
         """
 
         ####################################################################
         ####################################################################
         ####################################################################
-        #### parameters initialization ####
+        #### Parameters initialization ####
         
-        fn     = self._fs/2
-        wp     = self._f1*np.pi/fn
-        ws     = np.pi - wp
+        fn     = self._fs/2                                                             # Nyquist frequency
+        wp     = self._f1*np.pi/fn                                                      # Passband edge frequency in rad/s
+        ws     = np.pi - wp                                                             # Stopband edge frequency in rad/s
 
-        ds     = pow(10, -self._As/20)
+        ds     = pow(10, -self._As/20)                                                  # Stopband ripple
 
         r      = np.tan(wp/2)/np.tan(ws/2)
         rr     = np.sqrt(1-r**2)
@@ -129,8 +131,10 @@ class AllPass:
         ####################################################################
         ####################################################################
         ####################################################################
-        #### filter order ####
+        #### Filter order ####
 
+        # Filter order computed (if not specified) as the smallest odd integer integer
+        # satisfying --> N >= log10(16*D) / log10(1/q)
         if self._N == 0:
             D         = ((1-ds**2)/(ds**2))**2
             threshold = np.log10(16*D)/np.log10(1/q)
@@ -139,13 +143,13 @@ class AllPass:
 
         if self._N%2 == 0:
             self._N = self._N+1
-            print("filter order must be odd, added 1")
+            print("Filter order must be odd, added 1")
 
         if self._N <= 3:
             self._N = 5
-            print("filter order must be odd and greater than 3 for interlacing property, set to 5")
+            print("Filter order must be odd and greater than 3 for interlacing property, set to 5")
 
-        print("filter order - N: " + str(self._N))
+        print("Filter order - N: " + str(self._N))
 
 
 
@@ -153,14 +157,14 @@ class AllPass:
         ####################################################################
         ####################################################################
         ####################################################################
-        #### coefficients computation ####
+        #### Coefficients computation ####
 
         alpha = []
 
         for k in range(1, int((self._N-1)/2)+1):
             num = 0
             den = 0
-            for i in range(0,7,1):
+            for i in range(0,7,1):  # 7 iteratiors as done in the paper
                 tmp_num = ((-1)**i)*(q**(i*(i+1)))*np.sin(((2*1+1)*k*np.pi)/self._N)
                 num     = num + tmp_num
 
@@ -174,10 +178,10 @@ class AllPass:
             bk = np.sqrt((1-r*(gamma**2))*(1-((gamma**2)/r)))
             ck = (2*bk)/(1+(gamma**2))
 
-            alpha.append(np.sqrt(((2-ck)/(2+ck))))
+            alpha.append(np.sqrt(((2-ck)/(2+ck))))                                      # Coefficients
             alpha.append(-np.sqrt(((2-ck)/(2+ck))))
 
-        print("coefficients pre-warping: " + str(alpha))
+        print("Coefficients: " + str(alpha))
 
 
 
@@ -185,7 +189,7 @@ class AllPass:
         ####################################################################
         ####################################################################
         ####################################################################
-        #### interlacing ####
+        #### Pole interlacing ####
 
         A0    = np.zeros((int((self._N-1)/2),1))
         A1    = np.zeros((int((self._N-1)/2),1))
@@ -218,7 +222,7 @@ class AllPass:
         ####################################################################
         ####################################################################
         ####################################################################
-        #### transfer function computation ####
+        #### Transfer function computation ####
 
         self._w, hi = signal.freqz([A1[0], 1], [1, A1[0]], worN=1024, fs=self._fs)
         hr          = 1
@@ -241,17 +245,17 @@ class AllPass:
 
     def _coeff_generation_warping(self):
         """
-        IIR HIlber filter coefficients generation with warping
+        IIR Hilbert filter coefficients generation with warping
         """
 
         ####################################################################
         ####################################################################
         ####################################################################
-        #### parameters initialization ####
+        #### Parameters initialization ####
         
-        fn     = self._fs/2
-        w1     = self._f1*np.pi/fn
-        w2     = self._f2*np.pi/fn
+        fn     = self._fs/2                                                         # Nyquist frequency
+        w1     = self._f1*np.pi/fn                                                  # Passband edge frequency in rad/s
+        w2     = self._f2*np.pi/fn                                                  # Stopband edge frequency in rad/s
 
         tan1   = np.tan(w1/2)
         tan2   = np.tan(w2/2)
@@ -265,7 +269,7 @@ class AllPass:
 
         beta   = np.sqrt(tan1*tan2)
         kb     = (beta-1)/(beta+1)
-        ds     = pow(10, -self._As/20)
+        ds     = pow(10, -self._As/20)                                              # Stopband ripple
 
         r      = np.tan(wp/2)/np.tan(ws/2)
         rr     = np.sqrt(1-r**2)
@@ -278,8 +282,10 @@ class AllPass:
         ####################################################################
         ####################################################################
         ####################################################################
-        #### filter order ####
+        #### Filter order ####
 
+        # Filter order computed (if not specified) as the smallest odd integer integer
+        # satisfying --> N >= log10(16*D) / log10(1/q)
         if self._N == 0:
             D         = ((1-ds**2)/(ds**2))**2
             threshold = np.log10(16*D)/np.log10(1/q)
@@ -288,13 +294,13 @@ class AllPass:
 
         if self._N%2 == 0:
             self._N = self._N+1
-            print("filter order must be odd, added 1")
+            print("Filter order must be odd, added 1")
 
         if self._N <= 3:
             self._N = 5
-            print("filter order must be odd and greater than 3 for interlacing, set to 5")
+            print("Filter order must be odd and greater than 3 for interlacing, set to 5")
 
-        print("filter order - N: " + str(self._N))
+        print("Filter order - N: " + str(self._N))
 
 
 
@@ -302,7 +308,7 @@ class AllPass:
         ####################################################################
         ####################################################################
         ####################################################################
-        #### coefficients computation ####
+        #### Coefficients computation ####
 
         alpha = []
 
@@ -323,10 +329,10 @@ class AllPass:
             bk = np.sqrt((1-r*(gamma**2))*(1-((gamma**2)/r)))
             ck = (2*bk)/(1+(gamma**2))
 
-            alpha.append(np.sqrt(((2-ck)/(2+ck))))
+            alpha.append(np.sqrt(((2-ck)/(2+ck))))                                      # Coefficients
             alpha.append(-np.sqrt(((2-ck)/(2+ck))))
 
-        print("coefficients pre-warping: " + str(alpha))
+        print("Coefficients pre-warping: " + str(alpha))
 
 
 
@@ -334,7 +340,7 @@ class AllPass:
         ####################################################################
         ####################################################################
         ####################################################################
-        #### interlacing ####
+        #### Interlacing ####
 
         A0    = np.zeros((int((self._N-1)/2),1))
         A1    = np.zeros((int((self._N-1)/2),1))
@@ -364,7 +370,7 @@ class AllPass:
         ####################################################################
         ####################################################################
         ####################################################################
-        #### warping ####
+        #### Warping ####
 
         A0_w    = np.zeros((int((self._N-1)/2),1))
         A1_w    = np.zeros((int((self._N-1)/2)+1,1))
@@ -389,7 +395,7 @@ class AllPass:
         ####################################################################
         ####################################################################
         ####################################################################
-        #### transfer function computation ####
+        #### Transfer function computation ####
 
         self._w, hi = signal.freqz([A1_w[0], 1], [1, A1_w[0]], worN=1024, fs=self._fs)
         hr          = 1
