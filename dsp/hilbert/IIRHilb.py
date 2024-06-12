@@ -97,6 +97,7 @@ class AllPass:
         ax5.set_title('Phase response difference between Real and Imaginary')
         ax5.plot(self._w, 180*(angles_r-angles_i)/np.pi, 'g')
         ax5.set_ylabel('Angle (deg)', color='g')
+        ax5.set_xlabel('Frequency [Hz]')
         ax5.grid(True)
         ax5.axis('tight')
 
