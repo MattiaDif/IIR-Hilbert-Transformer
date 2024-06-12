@@ -27,13 +27,20 @@ To clone this repo open your terminal and run:
 
 `git clone https://github.com/MattiaDif/IIR-Hilbert-Transformer.git`
 
+Then go into dsp/ folder and run:
+
+`./prj_init.py`
+
+to install required packages. It works for both Windows and Linux systems.
+
 
 ## Repo description
 
 Inside IIR-HIlbert-Transformer
 
 1. 'dsp' folder: it contains the IIRHilb.py file (inside hilbert folder) with the class implementation of the Hilbert transformer. The run.py script runs a filter design example.
-2. requirements.txt: txt file with the python packages required.
+2. dsp/requirements.txt: txt file with the python packages required.
+3. dsp/prj_init.py file to download the required packages.
 
 
 ## REFERENCE
