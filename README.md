@@ -46,9 +46,9 @@ Inside IIR-HIlbert-Transformer
 ## REFERENCE
 If you use this repo, please cite:
 
-"Di Florio, M. (2023). IIR-Hilbert-Transformer (Version 0.1) [Computer software]. https://github.com/MattiaDif/IIR-Hilbert-Transformer.git"
+"Di Florio, M. (2023). IIR-Hilbert-Transformer (Version 0.2) [Computer software]. https://github.com/MattiaDif/IIR-Hilbert-Transformer.git"
 
 ## Note
-To contribute refers to the dev branch! Thanks and see you around! :)
+To contribute refers to the dev branch! 
 
 
