@@ -4,6 +4,6 @@ authors:
 - family-names: "Di Florio"
   given-names: "Mattia"
 title: "IIR-Hilbert-Transformer"
-version: 0.1
+version: 0.2
 date-released: 19/12/2023
 url: "https://github.com/MattiaDif/IIR-Hilbert-Transformer.git"
